@@ -6,9 +6,26 @@
 |Email      |nathan-chen@csu.fullerton.edu  |
 
 ## Algorithm 1: Connecting Pairs of Persons
-- While the algorithm uses a nested loop, it picks up from where the previous loop stops, so in effect, only one loop is occuring at any time.
-- Therefore, this is considered one loop and falls within O(n) time complexity
-    - Everything else is considered one step
+### Proving by induction
+
+- For an array with length *n*, the worst case scenario occurs when the array is in reverse order: `row = [n, n-1, ..., 2, 1]`.
+    - In this case every element must be swapped to its correct position.
+
+- **Base Case**: for `n=2`, `row` can either be `[1, 2]` or `[2, 1]`.
+    - In both cases, only one swap is needed.
+    - Base case holds.
+
+- **Inductive Step**: Assume that for an array length *k*, the number of swaps required is `k / 2`.
+    - In an array with length `k + 2`, where the first k elements are in reverse order, and the last two elements are in the correct positions
+        - `[k + 1, k, ..., 2, 1, k + 2, k + 3]`
+    - In order to place `k + 1` in its correct position, it needs to be swapped with k, which requires 1 swap.
+        - After swapping: `[k, k + 1, ..., 2, 1, k + 2, k + 3]; the remaining elements are in reverse order, forming an array of length *k*.
+    - By the inductive hypothesis, the remaining swaps fequired for the array length *k* is `k / 2`
+    - Therefore, the total number of swaps required for an array of length `k + 2` is 1 (for swapping *k* and `k + 1`) + `k / 2` (for the remaining swaps).
+        - `(k + 2) / 2`
+
+- **Conclusion**: By induction, we can conclude for that an array of length *n*, the algorithm has a time complexity of `O(n/2) = O(n)`.
+    - The time spent grows linearly with the size of the array.
 
 ### Pseudocode
 ```
@@ -29,6 +46,20 @@ Function min_swaps(row[]) {
 `~$ python3 algorithm-1.py`
 
 ## Algorithm 2: Greedy Approach to Hamilton Problem
+### Proving time complexity through induction
+- Let the number of cities be *n*
+
+- **Base Case**: For `n = 1`, the function returns zero.
+    - Time complexity for `n = 1` is O(1)
+
+- **Inductive step**: Assuming that for `n = k`, the function has a time complexity of `O(k)`.
+    - For `n = k + 1`: in the worst case, the car starts at city *0* and cannot reach city `k + 1`.
+        - The function will iterate through all cities from *0* to *k* before determining that city *0* is not a valid starting point.
+    - During each iteration, the function calculates the total gas and total distance, which are `O(1)` operations.
+        - Therefore, the time complexity of the function for `n = k + 1` is `O(k + 1) = O(k)`.
+
+    - **Conclusion**: By induction, the function has a time complexity of O(n) for an input array of size *n*. 
+        - The time taken grows linearly with the number of cities
 
 
 ### Pseudocode
